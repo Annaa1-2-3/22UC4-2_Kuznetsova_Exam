@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Админка - Корочки.есть</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="container fade-in">
+    <h1>Панель администратора</h1>
+    <div id="apps"></div>
+    <a href="#" id="logout" class="link" style="color: #e74c3c;">Выйти</a>
+  </div>
+
+  <script src="js/api.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      const user = JSON.parse(localStorage.getItem('user'));
+      if (!user) {
+        alert('Вы не авторизованы');
+        window.location.href = 'index.html';
+        return;
+      }
+
+      if (user.login !== 'Admin') {
+        alert('Доступ запрещён');
+        window.location.href = 'dashboard.html';
+        return;
+      }
+
+      try {
+        const apps = await api.getAllApplications();
+        const div = document.getElementById('apps');
+
+        if (apps.length === 0) {
+          div.innerHTML = '<p>Нет заявок.</p>';
+          return;
+        }
+      }
+      catch (err) {
+    console.error(err);
+    res.status(500).json({ error: '500', details: err.message });
+  }
+
+    document.getElementById('logout').onclick = (e) => {
+      e.preventDefault();
+      localStorage.removeItem('user');
+      location.href = 'index.html';
+    }
+  });
+</script>
+</body>
+</html>

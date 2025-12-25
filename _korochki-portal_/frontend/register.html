@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Регистрация - Корочки.есть</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="container fade-in">
+    <h1>Регистрация</h1>
+    <form id="regForm">
+      <label for="login">Логин (латиница/цифры, ≥6)</label>
+      <input type="text" id="login" required>
+      <div class="error" id="err-login"></div>
+
+      <label for="password">Пароль (≥8 символов)</label>
+      <input type="password" id="password" required>
+      <div class="error" id="err-password"></div>
+
+      <label for="fio">ФИО (кириллица)</label>
+      <input type="text" id="fio" required>
+      <div class="error" id="err-fio"></div>
+
+      <label for="phone">Телефон (8(XXX)XXX-XX-XX)</label>
+      <input type="tel" id="phone" placeholder="8(123)456-78-90" required>
+      <div class="error" id="err-phone"></div>
+
+      <label for="email">Email</label>
+      <input type="email" id="email" required>
+      <div class="error" id="err-email"></div>
+
+      <button type="submit" class="button-hover">Зарегистрироваться</button>
+    </form>
+
+    <a href="index.html" class="link">Уже есть аккаунт? Войти</a>
+  </div>
+
+  <script src="js/utils.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+</body>
+</html>

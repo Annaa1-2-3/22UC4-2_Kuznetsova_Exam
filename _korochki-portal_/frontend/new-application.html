@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Новая заявка - Корочки.есть</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="container fade-in">
+    <h1>Новая заявка</h1>
+    <form id="appForm">
+      <label for="course">Курс</label>
+      <select id="course" required>
+        <option value="">— Выберите —</option>
+      </select>
+
+      <label for="start_date">Дата начала (ДД.ММ.ГГГГ)</label>
+      <input type="text" id="start_date" placeholder="25.12.2025" required>
+      <div class="error" id="err-date"></div>
+
+      <label>Способ оплаты</label>
+      <label><input type="radio" name="payment" value="наличные" required> Наличные</label>
+      <label><input type="radio" name="payment" value="перевод"> Перевод</label>
+      <div class="error" id="err-payment"></div>
+
+      <button type="submit" class="button-hover">Отправить заявку</button>
+    </form>
+  </div>
+
+  <script src="js/utils.js"></script>
+  <script src="js/api.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      const user = JSON.parse(localStorage.getItem('user'));
+      if (!user) {
+        alert('Вы не авторизованы');
+        window.location.href = 'index.html';
+        return;
+      }
+
+      const courses = await api.getCourses();
+      const select = document.getElementById('course');
+      courses.forEach(c => {
+        const opt = document.createElement('option');
+        opt.value = c.id;
+        opt.textContent = c.name;
+        select.appendChild(opt);
+      });
+
+      document.getElementById('appForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const course_id = parseInt(document.getElementById('course').value);
+        const start_date = document.getElementById('start_date').value.trim();
+        const payment_method = document.querySelector('input[name="payment"]:checked')?.value;
+
+        const errDate = document.getElementById('err-date');
+        const errPayment = document.getElementById('err-payment');
+
+        errDate.textContent = '';
+        errPayment.textContent = '';
+
+        if (!course_id) {
+          alert('Выберите курс');
+          return;
+        }
+
+        if (!start_date) {
+          errDate.textContent = 'Дата обязательна';
+          return;
+        }
+
+        if (!payment_method) {
+          errPayment.textContent = 'Выберите способ оплаты';
+          return;
+        }
+
+          alert('Заявка успешно отправлена!');
+          window.location.href = 'dashboard.html';
+          alert('Ошибка отправки заявки: ' + (err.message || 'Неизвестная ошибка'));
+        }
+    )});
+  </script>
+</body>
+</html>

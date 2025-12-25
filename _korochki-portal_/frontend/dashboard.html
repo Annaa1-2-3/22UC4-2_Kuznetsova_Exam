@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Мои заявки - Корочки.есть</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="container fade-in">
+    <h1>Мои заявки</h1>
+    <div id="apps"></div>
+    <a href="new-application.html" class="link">+ Подать новую заявку</a>
+    <a href="#" id="logout" class="link" style="color: #e74c3c;">Выйти</a>
+  </div>
+
+  <script src="js/api.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      const user = JSON.parse(localStorage.getItem('user'));
+      if (!user) {
+        alert('Вы не авторизованы');
+        window.location.href = 'index.html';
+        return;
+      }
+
+      try {
+        const apps = await api.getMyApplications(user.id);
+        const div = document.getElementById('apps');
+        
+        if (apps.length === 0) {
+          div.innerHTML = '<p>У вас пока нет заявок.</p>';
+          return;
+        }
+
+      } catch (err) {
+        alert('Ошибка загрузки заявок');
+        console.error(err);
+      }
+    });
+
+    function leaveReview(appId) {
+      const text = prompt('Ваш отзыв:');
+      if (text && text.trim()) {
+        api.postReview(appId, text.trim()).then(() => {
+          alert('Отзыв отправлен!');
+          location.reload();
+        }).catch(err => {
+          alert('Ошибка отправки отзыва');
+        });
+      }
+    }
+
+    document.getElementById('logout').onclick = (e) => {
+      e.preventDefault();
+      localStorage.removeItem('user');
+      location.href = 'index.html';
+    };
+  </script>
+</body>
+</html>

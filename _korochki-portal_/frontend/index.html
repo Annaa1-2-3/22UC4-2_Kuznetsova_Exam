@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Вход - Корочки.есть</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="slider-container">
+    <div class="slider-images" id="sliderImages">
+      <img class="slider-image" src="img/slide1.jpg" alt="Slide 1">
+      <img class="slider-image" src="img/slide2.png" alt="Slide 2">
+      <img class="slider-image" src="img/slide3.png" alt="Slide 3">
+      <img class="slider-image" src="img/slide4.jpeg" alt="Slide 4">
+    </div>
+    <div class="slider-controls">
+      <button class="slider-btn" id="prevBtn">❮</button>
+      <button class="slider-btn" id="nextBtn">❯</button>
+    </div>
+  </div>
+
+  <div class="container fade-in">
+    <h1>Вход в систему</h1>
+    <form id="loginForm">
+      <label for="login">Логин</label>
+      <input type="text" id="login" required autocomplete="username">
+
+      <label for="password">Пароль</label>
+      <input type="password" id="password" required autocomplete="current-password">
+
+      <div class="error" id="error"></div>
+
+      <button type="submit" class="button-hover">Войти</button>
+    </form>
+
+    <a href="register.html" class="link">Еще не зарегистрированы? Регистрация</a>
+  </div>
+
+  <script src="js/utils.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    const sliderImages = document.getElementById('sliderImages');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    let currentIndex = 0;
+    const images = document.querySelectorAll('.slider-image');
+    const totalImages = images.length;
+
+    function showImage(index) {
+      sliderImages.style.transform = `translateX(-${index * 100}%)`;
+    }
+
+    prevBtn.addEventListener('click', () => {
+      currentIndex = (currentIndex - 1 + totalImages) % totalImages;
+      showImage(currentIndex);
+    });
+
+    nextBtn.addEventListener('click', () => {
+      currentIndex = (currentIndex + 1) % totalImages;
+      showImage(currentIndex);
+    });
+
+    setInterval(() => {
+      currentIndex = (currentIndex + 1) % totalImages;
+      showImage(currentIndex);
+    }, 3000);
+  </script>
+</body>
+</html>
